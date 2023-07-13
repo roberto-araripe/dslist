@@ -10,6 +10,7 @@ import com.robertoararipe.dslist.dto.GameDTO;
 import com.robertoararipe.dslist.dto.GameMinDTO;
 import com.robertoararipe.dslist.entities.Game;
 import com.robertoararipe.dslist.entities.GameList;
+import com.robertoararipe.dslist.projections.GameMinProjection;
 import com.robertoararipe.dslist.repositories.GameRepository;
 
 @Service
@@ -28,6 +29,12 @@ public class GameService {
 	@Transactional(readOnly = true)
 	public List<GameMinDTO> findAll() {
 		List<Game> result = gameRepository.findAll();
+		return result.stream().map(x -> new GameMinDTO(x)).toList();		 
+	}
+	
+	@Transactional(readOnly = true)
+	public List<GameMinDTO> findByList(Long listId) {
+		List<GameMinProjection> result = gameRepository.searchByList(listId);
 		return result.stream().map(x -> new GameMinDTO(x)).toList();		
 	}
 }
